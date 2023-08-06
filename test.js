@@ -1,25 +1,34 @@
-function binarySearch(arr, val, leftIndex, rightIndex) {
-    if (arr.length === 0) return -1;
-    if (val < arr[leftIndex] || val > arr[rightIndex]) return -1;
+// Binary Search based C++ program to find number
+// of rotations in a sorted and rotated array.
 
-    while (leftIndex <= rightIndex) {
-        var midIndex = Math.floor((leftIndex + rightIndex) / 2);
-        if (arr[midIndex] === val) {
-            return midIndex;
-        } else if (val < arr[midIndex]) {
-            rightIndex = midIndex - 1;
-        } else {
-            leftIndex = midIndex + 1;
-        }
-    }
-    return -1;
-}
+// Returns count of rotations for an array which
+// is first sorted in ascending order, then rotated
+function countRotations(arr, leftIndex, rightIndex) {
+    // This condition is needed to handle the case
+    // when the array is not rotated at all
+    if (rightIndex < leftIndex) return 0;
 
-function findRotatedIndex(arr, val) {
-    var splitIndex = findsplitIndex(arr);
-    if (splitIndex > 0 && val >= arr[0] && val <= arr[splitIndex - 1]) {
-        return binarySearch(arr, val, 0, splitIndex - 1);
-    } else {
-        return binarySearch(arr, val, splitIndex, arr.length - 1);
-    }
+    // If there is only one element left
+    if (rightIndex == leftIndex) return leftIndex;
+
+    // Find midIndex
+    let midIndex = Math.floor(
+        leftIndex + (rightIndex - leftIndex) / 2
+    ); /*(leftIndex + rightIndex)/2;*/
+
+    // Check if element (midIndex+1) is minimum element.
+    // Consider the cases like {3, 4, 5, 1, 2}
+    if (midIndex < rightIndex && arr[midIndex + 1] < arr[midIndex])
+        return midIndex + 1;
+
+    // Check if midIndex itself is minimum element
+    if (midIndex > leftIndex && arr[midIndex] < arr[midIndex - 1])
+        return midIndex;
+
+    // Decide whether we need to go to left half or
+    // right half
+    if (arr[rightIndex] > arr[midIndex])
+        return countRotations(arr, leftIndex, midIndex - 1);
+
+    return countRotations(arr, midIndex + 1, rightIndex);
 }

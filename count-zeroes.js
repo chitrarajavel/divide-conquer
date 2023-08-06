@@ -50,4 +50,4 @@ function countZeroes(arr) {
 // let result = countZeroes([0, 0, 0]);
 // console.log(result);
 
-module.exports = countZeroes;
+// module.exports = countZeroes;
